@@ -1,3 +1,4 @@
+
 """Settings for audio reactive LED strip"""
 from __future__ import print_function
 from __future__ import division
@@ -26,13 +27,14 @@ if DEVICE == 'esp8266':
     """Set to False because the firmware handles gamma correction + dither"""
 
 if DEVICE == 'pi':
-    LED_PIN = 18
+    import board
+    LED_PIN = board.D18
     """GPIO pin connected to the LED strip pixels (must support PWM)"""
     LED_FREQ_HZ = 800000
     """LED signal frequency in Hz (usually 800kHz)"""
     LED_DMA = 5
     """DMA channel used for generating PWM signal (try 5)"""
-    BRIGHTNESS = 255
+    BRIGHTNESS = 0.3
     """Brightness of LED strip between 0 and 255"""
     LED_INVERT = False
     """Set True if using an inverting logic level converter"""
@@ -46,10 +48,10 @@ if DEVICE == 'blinkstick':
 USE_GUI = False
 """Whether or not to display a PyQtGraph GUI plot of visualization"""
 
-DISPLAY_FPS = True
+DISPLAY_FPS = False
 """Whether to display the FPS when running (can reduce performance)"""
 
-N_PIXELS = 144
+N_PIXELS = 60
 """Number of pixels in the LED strip (must match ESP8266 firmware)"""
 
 GAMMA_TABLE_PATH = os.path.join(os.path.dirname(__file__), 'gamma_table.npy')
@@ -80,7 +82,7 @@ assert FPS <= _max_led_FPS, 'FPS must be <= {}'.format(_max_led_FPS)
 MIN_FREQUENCY = 200
 """Frequencies below this value will be removed during audio processing"""
 
-MAX_FREQUENCY = 12000
+MAX_FREQUENCY = 1000
 """Frequencies above this value will be removed during audio processing"""
 
 N_FFT_BINS = 24

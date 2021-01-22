@@ -120,8 +120,8 @@ def visualize_scroll(y):
     p *= 0.98
     p = gaussian_filter1d(p, sigma=0.2)
     # Create new color originating at the center
-    p[0, 0] = r
-    p[1, 0] = g
+    p[0, 0] = g
+    p[1, 0] = r
     p[2, 0] = b
     # Update the LED strip
     return np.concatenate((p[:, ::-1], p), axis=1)

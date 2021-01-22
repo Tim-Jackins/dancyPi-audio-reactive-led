@@ -11,11 +11,17 @@ if config.DEVICE == 'esp8266':
     _sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # Raspberry Pi controls the LED strip directly
 elif config.DEVICE == 'pi':
-    from rpi_ws281x import *
-    strip = Adafruit_NeoPixel(config.N_PIXELS, config.LED_PIN,
-                                       config.LED_FREQ_HZ, config.LED_DMA,
-                                       config.LED_INVERT, config.BRIGHTNESS)
-    strip.begin()
+    import neopixel
+    # strip = Adafruit_NeoPixel(config.N_PIXELS, config.LED_PIN,
+    #                                    config.LED_FREQ_HZ, config.LED_DMA,
+    #                                    config.LED_INVERT, config.BRIGHTNESS)
+    strip = neopixel.NeoPixel(
+      config.LED_PIN,
+      config.N_PIXELS,
+      brightness=config.BRIGHTNESS,
+      auto_write=False,
+    )
+    # strip.begin()
 elif config.DEVICE == 'blinkstick':
     from blinkstick import blinkstick
     import signal
@@ -104,8 +110,8 @@ def _update_pi():
         # Ignore pixels if they haven't changed (saves bandwidth)
         if np.array_equal(p[:, i], _prev_pixels[:, i]):
             continue
-            
-        strip._led_data[i] = int(rgb[i])
+
+        strip[i] = int(rgb[i])
     _prev_pixels = np.copy(p)
     strip.show()
 
